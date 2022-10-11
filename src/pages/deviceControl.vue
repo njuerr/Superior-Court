@@ -24,7 +24,7 @@
           <h6>{{ remotestate.name }}</h6>
         </div>
         <div style="margin-left: 50px;margin-top: 4px">
-          <Select v-model="ycjtselectmenu.model" style="width:200px"
+          <Select v-model="remoteListenDropDownList.model" style="width:200px"
                   @model-value="0">
             <Option v-for="item in remoteProgress" :value="item.ChannelCode" :key="item.ID">{{
                 item.ChannelName
@@ -33,7 +33,7 @@
           </Select>
         </div>
         <div>
-          <q-btn flat :color="ycjtselectmenu.color" @click="openRemoteListening" style="margin-left: 20px"><h6>开启监听</h6></q-btn>
+          <q-btn flat :color="remoteListenDropDownList.color" @click="openRemoteListening" style="margin-left: 20px"><h6>开启监听</h6></q-btn>
         </div>
       </div>
       <div class="flex flex-center">
@@ -73,7 +73,7 @@ export default defineComponent({
   name: 'deviceControl',
   setup () {
     // 用于远程监听下拉列表
-    const ycjtselectmenu = reactive({
+    const remoteListenDropDownList = reactive({
       model: '',
       color: 'red'
     })
@@ -108,7 +108,7 @@ export default defineComponent({
       tempInfo,
       remoteProgress,
       remotestate,
-      ycjtselectmenu
+      remoteListenDropDownList
     }
   },
   created () {
@@ -159,17 +159,17 @@ export default defineComponent({
   methods: {
     // 用于远程监听页面下的监听按扭的功能实现
     openRemoteListening () {
-      if (this.ycjtselectmenu.color === 'red') {
-        this.ycjtselectmenu.color = 'green'
+      if (this.remoteListenDropDownList.color === 'red') {
+        this.remoteListenDropDownList.color = 'green'
         for (let i = 0; i < this.remoteProgress.length; i++) {
-          if (this.ycjtselectmenu.model === this.remoteProgress[i].ChannelCode) {
-            console.log(3232323, 2111, this.ycjtselectmenu.model)
+          if (this.remoteListenDropDownList.model === this.remoteProgress[i].ChannelCode) {
+            console.log(3232323, 2111, this.remoteListenDropDownList.model)
             this.$socket.emit('openRemoteListening', this.remoteProgress[i].ChannelCode, this.remoteProgress[i].Deviceid, 'open')
           }
         }
       } else {
         this.$socket.emit('openRemoteListening', 'meter 3', '1', 'close')
-        this.ycjtselectmenu.color = 'red'
+        this.remoteListenDropDownList.color = 'red'
       }
     },
     changeurl (data) {
