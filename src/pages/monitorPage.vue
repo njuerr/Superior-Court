@@ -64,6 +64,7 @@
                 <Option v-for="item in devicelist.data" :value="item.Deviceid" :key="item.Deviceid">{{
                     item.DeviceName
                   }}
+
                 </Option>
               </Select>
               <Input v-model="errInfo.errinput" placeholder="故障内容输入" clearable
@@ -118,8 +119,8 @@
                 <q-td key="Reportuser" :props="props">
                   <div class="text-pre-wrap">{{ props.row.Reportuser }}</div>
                 </q-td>
-                <q-td key="Failcontent" :props="props">
-                  {{ props.row.Failcontent }}
+                <q-td key="FailContent" :props="props">
+                  {{ props.row.FailContent }}
                 </q-td>
                 <q-td key="Processcontent" :props="props">
                   {{ props.row.Processcontent }}
@@ -240,10 +241,10 @@ export default defineComponent({
           field: 'Reportuser'
         },
         {
-          name: 'Failcontent',
+          name: 'FailContent',
           align: 'left',
           label: '故障内容',
-          field: 'Failcontent'
+          field: 'FailContent'
         },
         {
           name: 'Processcontent',
@@ -302,6 +303,7 @@ export default defineComponent({
       btnDisable,
       courtState,
       kzButton,
+      controlButtons,
       openDialog,
       errDialoginfo,
       systemTime,

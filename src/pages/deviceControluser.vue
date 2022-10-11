@@ -5,16 +5,16 @@
       <div class="row" style="padding: 15px">
         <div><h6>受控设备：</h6></div>
         <div>
-          <Select v-model="selectmenu.model" style="width:200px" @on-change="changeurl(selectmenu.model)"
+          <Select v-model="selectMenu.model" style="width:200px" @on-change="changeurl(selectMenu.model)"
                   @model-value="0">
-            <Option v-for="item in selectmenu.devicelist" :value="item.value" :key="item.value">{{
+            <Option v-for="item in selectMenu.devicelist" :value="item.value" :key="item.value">{{
                 item.label
               }}
             </Option>
           </Select>
         </div>
         <div>
-          <Input v-model="errInfor.errinput" placeholder="故障内容输入" clearable
+          <Input v-model="errInfo.errinput" placeholder="故障内容输入" clearable
                  style="margin-left: 20px;width: 300px"/>
         </div>
         <div>
@@ -23,7 +23,7 @@
       </div>
       <div class="flex flex-center">
         <iframe
-          :src="deviceurl.url"
+          :src="deviceUrl.url"
           id="mobsf" scrolling="no" frameborder="0"
           style="width: 1328px; height: 830px;transform-origin:top"></iframe>
       </div>
@@ -57,28 +57,28 @@ const token = window.sessionStorage.getItem('token')
 export default defineComponent({
   name: 'deviceControl',
   setup () {
-    const tempinfor = reactive({
+    const tempInfo = reactive({
       deviceid: '',
       courtid: ''
     })
-    const errInfor = reactive({ errinput: '' })
+    const errInfo = reactive({ errinput: '' })
     const openDialog = reactive({
       state: false,
       content: ''
     })
-    const deviceurl = reactive({
+    const deviceUrl = reactive({
       url: ''
     })
-    const selectmenu = reactive({
+    const selectMenu = reactive({
       devicelist: [],
       model: ''
     })
     return {
-      deviceurl,
-      selectmenu,
+      deviceUrl,
+      selectMenu,
       openDialog,
-      errInfor,
-      tempinfor
+      errInfo,
+      tempInfo
     }
   },
   created () {
@@ -96,7 +96,7 @@ export default defineComponent({
       if (data.length !== 0) {
         for (let i = 0; i < data.length; i++) {
           console.log('111111', data[i].DeviceName)
-          this.selectmenu.devicelist.push({
+          this.selectMenu.devicelist.push({
             courtid: data[i].CourtID,
             label: data[i].DeviceName,
             value: data[i].ID,
@@ -112,34 +112,34 @@ export default defineComponent({
   },
   mounted () {
     setTimeout(() => {
-      this.selectmenu.model = this.selectmenu.devicelist[0].value
-      this.deviceurl.url = this.selectmenu.devicelist[0].url
+      this.selectMenu.model = this.selectMenu.devicelist[0].value
+      this.deviceUrl.url = this.selectMenu.devicelist[0].url
     }, 200)
   },
   methods: {
     changeurl (data) {
-      for (let i = 0; i < this.selectmenu.devicelist.length; i++) {
-        if (data === this.selectmenu.devicelist[i].value) {
-          this.deviceurl.url = this.selectmenu.devicelist[i].url
-          this.tempinfor.deviceid = this.selectmenu.devicelist[i].deviceid
+      for (let i = 0; i < this.selectMenu.devicelist.length; i++) {
+        if (data === this.selectMenu.devicelist[i].value) {
+          this.deviceUrl.url = this.selectMenu.devicelist[i].url
+          this.tempInfo.deviceid = this.selectMenu.devicelist[i].deviceid
         }
       }
     },
     errreturn () {
-      if (this.tempinfor.deviceid === '') {
-        this.tempinfor.deviceid = this.selectmenu.devicelist[0].deviceid
-        this.tempinfor.courtid = this.selectmenu.devicelist[0].courtid
+      if (this.tempInfo.deviceid === '') {
+        this.tempInfo.deviceid = this.selectMenu.devicelist[0].deviceid
+        this.tempInfo.courtid = this.selectMenu.devicelist[0].courtid
       } else {
-        for (let i = 0; i < this.selectmenu.devicelist.length; i++) {
-          if (this.selectmenu.devicelist[i].deviceid === this.tempinfor.deviceid) {
-            this.tempinfor.courtid = this.selectmenu.devicelist[i].courtid
+        for (let i = 0; i < this.selectMenu.devicelist.length; i++) {
+          if (this.selectMenu.devicelist[i].deviceid === this.tempInfo.deviceid) {
+            this.tempInfo.courtid = this.selectMenu.devicelist[i].courtid
           }
         }
       }
-      if (this.tempinfor.deviceid !== '' && this.errInfor.errinput !== '' && this.tempinfor.courtid !== '') {
-        this.$socket.emit('monitorerrinput', this.tempinfor.courtid, this.errInfor.errinput, token, this.tempinfor.deviceid)
+      if (this.tempInfo.deviceid !== '' && this.errInfo.errinput !== '' && this.tempInfo.courtid !== '') {
+        this.$socket.emit('monitorFailureInputLogs', this.tempInfo.courtid, this.errInfo.errinput, token, this.tempInfo.deviceid)
       }
-      this.errInfor.errinput = ''
+      this.errInfo.errinput = ''
     }
   }
 })

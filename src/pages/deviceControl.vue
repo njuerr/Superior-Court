@@ -5,16 +5,16 @@
       <div class="row" style="padding: 15px">
         <div><h6>受控设备：</h6></div>
         <div>
-          <Select v-model="selectmenu.model" style="width:200px" @on-change="changeurl(selectmenu.model)"
+          <Select v-model="selectMenu.model" style="width:200px" @on-change="changeurl(selectMenu.model)"
                   @model-value="0">
-            <Option v-for="item in selectmenu.devicelist" :value="item.value" :key="item.value">{{
+            <Option v-for="item in selectMenu.devicelist" :value="item.value" :key="item.value">{{
                 item.label
               }}
             </Option>
           </Select>
         </div>
         <div>
-          <Input v-model="errInfor.errinput" placeholder="故障内容输入" clearable
+          <Input v-model="errInfo.errinput" placeholder="故障内容输入" clearable
                  style="margin-left: 20px;width: 300px"/>
         </div>
         <div>
@@ -33,7 +33,7 @@
           </Select>
         </div>
         <div>
-          <q-btn flat :color="ycjtselectmenu.color" @click="listenOpen" style="margin-left: 20px"><h6>开启监听</h6></q-btn>
+          <q-btn flat :color="ycjtselectmenu.color" @click="openRemoteListening" style="margin-left: 20px"><h6>开启监听</h6></q-btn>
         </div>
       </div>
       <div class="flex flex-center">
@@ -84,11 +84,11 @@ export default defineComponent({
     })
     // 用于远程监听按钮
     const remoteProgress = reactive([])
-    const tempinfor = reactive({
+    const tempInfo = reactive({
       deviceid: '',
       courtid: ''
     })
-    const errInfor = reactive({ errinput: '' })
+    const errInfo = reactive({ errinput: '' })
     const openDialog = reactive({
       state: false,
       content: ''
@@ -96,23 +96,23 @@ export default defineComponent({
     const deviceurl = reactive({
       url: ''
     })
-    const selectmenu = reactive({
+    const selectMenu = reactive({
       devicelist: [],
       model: ''
     })
     return {
       deviceurl,
-      selectmenu,
+      selectMenu,
       openDialog,
-      errInfor,
-      tempinfor,
+      errInfo,
+      tempInfo,
       remoteProgress,
       remotestate,
       ycjtselectmenu
     }
   },
   created () {
-    this.$socket.emit('listenopen', 'meter 12', '1', 'open')
+    this.$socket.emit('openRemoteListening', 'meter 12', '1', 'open')
     console.log(window.screen.height)
     const id = this.$route.params.id
     this.remotestate.name = '远程监听：'
@@ -136,7 +136,7 @@ export default defineComponent({
       if (data.length !== 0) {
         for (let i = 0; i < data.length; i++) {
           console.log('111111', data[i].DeviceName)
-          this.selectmenu.devicelist.push({
+          this.selectMenu.devicelist.push({
             courtid: data[i].CourtID,
             label: data[i].DeviceName,
             value: data[i].ID,
@@ -152,53 +152,53 @@ export default defineComponent({
   },
   mounted () {
     setTimeout(() => {
-      this.selectmenu.model = this.selectmenu.devicelist[0].value
-      this.deviceurl.url = this.selectmenu.devicelist[0].url
+      this.selectMenu.model = this.selectMenu.devicelist[0].value
+      this.deviceurl.url = this.selectMenu.devicelist[0].url
     }, 200)
   },
   methods: {
     // 用于远程监听页面下的监听按扭的功能实现
-    listenOpen () {
+    openRemoteListening () {
       if (this.ycjtselectmenu.color === 'red') {
         this.ycjtselectmenu.color = 'green'
         for (let i = 0; i < this.remoteProgress.length; i++) {
           if (this.ycjtselectmenu.model === this.remoteProgress[i].ChannelCode) {
             console.log(3232323, 2111, this.ycjtselectmenu.model)
-            this.$socket.emit('listenopen', this.remoteProgress[i].ChannelCode, this.remoteProgress[i].Deviceid, 'open')
+            this.$socket.emit('openRemoteListening', this.remoteProgress[i].ChannelCode, this.remoteProgress[i].Deviceid, 'open')
           }
         }
       } else {
-        this.$socket.emit('listenopen', 'meter 3', '1', 'close')
+        this.$socket.emit('openRemoteListening', 'meter 3', '1', 'close')
         this.ycjtselectmenu.color = 'red'
       }
     },
     changeurl (data) {
       console.log(222222222, data)
       this.remotestate.state = ''
-      this.$socket.emit('listenopen', 'meter 3', '1', 'close')
-      for (let i = 0; i < this.selectmenu.devicelist.length; i++) {
-        if (data === this.selectmenu.devicelist[i].value) {
-          this.$socket.emit('getRemoteListening', this.selectmenu.devicelist[i].deviceid)
-          this.deviceurl.url = this.selectmenu.devicelist[i].url
-          this.tempinfor.deviceid = this.selectmenu.devicelist[i].deviceid
+      this.$socket.emit('openRemoteListening', 'meter 3', '1', 'close')
+      for (let i = 0; i < this.selectMenu.devicelist.length; i++) {
+        if (data === this.selectMenu.devicelist[i].value) {
+          this.$socket.emit('getRemoteListening', this.selectMenu.devicelist[i].deviceid)
+          this.deviceurl.url = this.selectMenu.devicelist[i].url
+          this.tempInfo.deviceid = this.selectMenu.devicelist[i].deviceid
         }
       }
     },
     errreturn () {
-      if (this.tempinfor.deviceid === '') {
-        this.tempinfor.deviceid = this.selectmenu.devicelist[0].deviceid
-        this.tempinfor.courtid = this.selectmenu.devicelist[0].courtid
+      if (this.tempInfo.deviceid === '') {
+        this.tempInfo.deviceid = this.selectMenu.devicelist[0].deviceid
+        this.tempInfo.courtid = this.selectMenu.devicelist[0].courtid
       } else {
-        for (let i = 0; i < this.selectmenu.devicelist.length; i++) {
-          if (this.selectmenu.devicelist[i].deviceid === this.tempinfor.deviceid) {
-            this.tempinfor.courtid = this.selectmenu.devicelist[i].courtid
+        for (let i = 0; i < this.selectMenu.devicelist.length; i++) {
+          if (this.selectMenu.devicelist[i].deviceid === this.tempInfo.deviceid) {
+            this.tempInfo.courtid = this.selectMenu.devicelist[i].courtid
           }
         }
       }
-      if (this.tempinfor.deviceid !== '' && this.errInfor.errinput !== '' && this.tempinfor.courtid !== '') {
-        this.$socket.emit('monitorerrinput', this.tempinfor.courtid, this.errInfor.errinput, token, this.tempinfor.deviceid)
+      if (this.tempInfo.deviceid !== '' && this.errInfo.errinput !== '' && this.tempInfo.courtid !== '') {
+        this.$socket.emit('monitorFailureInputLogs', this.tempInfo.courtid, this.errInfo.errinput, token, this.tempInfo.deviceid)
       }
-      this.errInfor.errinput = ''
+      this.errInfo.errinput = ''
     }
   }
 })
