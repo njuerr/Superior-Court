@@ -161,15 +161,16 @@ export default {
     }
   },
   beforeCreate () {
-    this.$socket.emit('getfaillogs')
-    this.$socket.emit('getoperatelogs', token)
-    this.$socket.emit('Operatelogs', {
+    this.$socket.emit('failureLogs')
+    this.$socket.emit('operateLogs', token)
+    this.$socket.emit('systemLogs', {
       UserName: token,
       content: '用户访问日志页面！'
     })
   },
   sockets: {
-    recvoperateLogs (data) {
+    recvSystemLogs (data) {
+      console.log(data)
       for (let i = 0; i < data.length; i++) {
         this.operatetables.rows.push({
           address: data[i].Address,
@@ -179,7 +180,7 @@ export default {
         })
       }
     },
-    recvfailLogs (data) {
+    recvFailureLogs (data) {
       console.log(data)
       this.failtables.rows = data
     }
