@@ -6,7 +6,7 @@
           <q-toolbar-title>远程音频管理平台</q-toolbar-title>
           <q-btn stretch flat v-for="(item, id) in menuList.menudata" :key='id' @click="navClick(item)"
                  style="color: white">
-            {{ item.MenuName }}
+            {{ item.menuName }}
           </q-btn>
         </q-toolbar>
       </q-header>
@@ -36,7 +36,7 @@ export default defineComponent({
   },
   methods: {
     navClick (nav) {
-      this.$router.push(nav.MenuLink)
+      this.$router.push(nav.menuLink)
     }
   },
   sockets: {

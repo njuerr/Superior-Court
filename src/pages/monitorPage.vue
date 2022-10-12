@@ -10,10 +10,10 @@
         <div class="col-5">
           <div class="q-pa-md">
             <q-btn-group spread>
-              <q-btn flat label="远程管理" icon="visibility" :color="kzButton.remoteManagement.color" @click="Remotemanage"/>
-              <q-btn flat label="设备定位" icon="timeline" :color="kzButton.deviceLocation.color" @click="Devicetarget"/>
-              <q-btn flat label="故障录入" icon="bookmark" :color="kzButton.deviceInformation.color" @click="Deviceinfo"/>
-              <q-btn flat label="故障处理" icon="share" :color="kzButton.faultHandling.color" @click="Failprocess"/>
+              <q-btn flat label="远程管理" icon="visibility" :color="controlButtons.remoteManagement.color" @click="Remotemanage"/>
+              <q-btn flat label="设备定位" icon="timeline" :color="controlButtons.deviceLocation.color" @click="Devicetarget"/>
+              <q-btn flat label="故障录入" icon="bookmark" :color="controlButtons.deviceInformation.color" @click="Deviceinfo"/>
+              <q-btn flat label="故障处理" icon="share" :color="controlButtons.faultHandling.color" @click="Failprocess"/>
             </q-btn-group>
           </div>
         </div>
@@ -87,7 +87,7 @@
                   }}
                 </Option>
               </Select>
-              <q-btn flat :color="kzButton.turnOnDeviceTarget.color" icon="adjust" label="开启定位" @click="deviceLocation"/>
+              <q-btn flat :color="controlButtons.turnOnDeviceTarget.color" icon="adjust" label="开启定位" @click="deviceLocation"/>
             </q-card-actions>
             <img src="http://127.0.0.1/机柜图.jpg" width="300">
           </q-card-section>
@@ -280,7 +280,7 @@ export default defineComponent({
     // 用于故障上报框
     const model = reactive(null)
     // 用于右上控制按钮
-    const kzButton = reactive({
+    const controlButtons = reactive({
       // 用于远程管理的状态
       remoteManagement: { color: '' },
       // 用于设备定位的状态
@@ -302,7 +302,6 @@ export default defineComponent({
       model,
       btnDisable,
       courtState,
-      kzButton,
       controlButtons,
       openDialog,
       errDialoginfo,
@@ -335,55 +334,55 @@ export default defineComponent({
     },
     // 用于远程管理按扭
     Remotemanage () {
-      if (this.kzButton.remoteManagement.color === '' && this.kzButton.deviceLocation.color !== 'red' && this.kzButton.faultHandling.color !== 'red' && this.kzButton.deviceInformation.color !== 'red') {
-        this.kzButton.remoteManagement.color = 'red'
+      if (this.controlButtons.remoteManagement.color === '' && this.controlButtons.deviceLocation.color !== 'red' && this.controlButtons.faultHandling.color !== 'red' && this.controlButtons.deviceInformation.color !== 'red') {
+        this.controlButtons.remoteManagement.color = 'red'
         this.btnDisable.dis = false
-      } else if (this.kzButton.remoteManagement.color === 'red' && this.kzButton.deviceLocation.color === '' && this.kzButton.faultHandling.color === '' && this.kzButton.deviceInformation.color === '') {
-        this.kzButton.remoteManagement.color = ''
+      } else if (this.controlButtons.remoteManagement.color === 'red' && this.controlButtons.deviceLocation.color === '' && this.controlButtons.faultHandling.color === '' && this.controlButtons.deviceInformation.color === '') {
+        this.controlButtons.remoteManagement.color = ''
         this.btnDisable.dis = true
       }
     },
     // 用于设备定位的按钮实现
     Devicetarget () {
-      if (this.kzButton.deviceLocation.color === '' && this.kzButton.remoteManagement.color !== 'red' && this.kzButton.faultHandling.color !== 'red' && this.kzButton.deviceInformation.color !== 'red') {
-        this.kzButton.deviceLocation.color = 'red'
+      if (this.controlButtons.deviceLocation.color === '' && this.controlButtons.remoteManagement.color !== 'red' && this.controlButtons.faultHandling.color !== 'red' && this.controlButtons.deviceInformation.color !== 'red') {
+        this.controlButtons.deviceLocation.color = 'red'
         this.btnDisable.dis = false
-      } else if (this.kzButton.deviceLocation.color === 'red' && this.kzButton.remoteManagement.color === '' && this.kzButton.faultHandling.color === '' && this.kzButton.deviceInformation.color === '') {
-        this.kzButton.deviceLocation.color = ''
+      } else if (this.controlButtons.deviceLocation.color === 'red' && this.controlButtons.remoteManagement.color === '' && this.controlButtons.faultHandling.color === '' && this.controlButtons.deviceInformation.color === '') {
+        this.controlButtons.deviceLocation.color = ''
         this.btnDisable.dis = true
       }
     },
     // 用于错误信息处理功能
     Failprocess () {
-      if (this.kzButton.faultHandling.color === '' && this.kzButton.deviceLocation.color !== 'red' && this.kzButton.remoteManagement.color !== 'red' && this.kzButton.deviceInformation.color !== 'red') {
-        this.kzButton.faultHandling.color = 'red'
+      if (this.controlButtons.faultHandling.color === '' && this.controlButtons.deviceLocation.color !== 'red' && this.controlButtons.remoteManagement.color !== 'red' && this.controlButtons.deviceInformation.color !== 'red') {
+        this.controlButtons.faultHandling.color = 'red'
         this.btnDisable.dis = false
-      } else if (this.kzButton.faultHandling.color === 'red' && this.kzButton.deviceLocation.color === '' && this.kzButton.remoteManagement.color === '' && this.kzButton.deviceInformation.color === '') {
-        this.kzButton.faultHandling.color = ''
+      } else if (this.controlButtons.faultHandling.color === 'red' && this.controlButtons.deviceLocation.color === '' && this.controlButtons.remoteManagement.color === '' && this.controlButtons.deviceInformation.color === '') {
+        this.controlButtons.faultHandling.color = ''
         this.btnDisable.dis = true
       }
     },
     // 用于设备信息页的按据
     Deviceinfo () {
-      if (this.kzButton.deviceInformation.color === '' && this.kzButton.deviceLocation.color !== 'red' && this.kzButton.remoteManagement.color !== 'red' && this.kzButton.faultHandling.color !== 'red') {
-        this.kzButton.deviceInformation.color = 'red'
+      if (this.controlButtons.deviceInformation.color === '' && this.controlButtons.deviceLocation.color !== 'red' && this.controlButtons.remoteManagement.color !== 'red' && this.controlButtons.faultHandling.color !== 'red') {
+        this.controlButtons.deviceInformation.color = 'red'
         this.btnDisable.dis = false
-      } else if (this.kzButton.deviceInformation.color === 'red' && this.kzButton.deviceLocation.color === '' && this.kzButton.remoteManagement.color === '' && this.kzButton.faultHandling.color === '') {
-        this.kzButton.deviceInformation.color = ''
+      } else if (this.controlButtons.deviceInformation.color === 'red' && this.controlButtons.deviceLocation.color === '' && this.controlButtons.remoteManagement.color === '' && this.controlButtons.faultHandling.color === '') {
+        this.controlButtons.deviceInformation.color = ''
         this.btnDisable.dis = true
       }
     },
     // 用于页面法院表中的按扭方法
     courtBtn (data, color, id) {
       console.log(99999, data, color, id)
-      if (color === 'red' && this.kzButton.deviceLocation.color !== 'red' && this.kzButton.faultHandling.color !== 'red' && this.kzButton.deviceInformation.color !== 'red') {
+      if (color === 'red' && this.controlButtons.deviceLocation.color !== 'red' && this.controlButtons.faultHandling.color !== 'red' && this.controlButtons.deviceInformation.color !== 'red') {
         this.errDialoginfo.head = '错误'
         this.errDialoginfo.content = '设备未在线'
         this.openDialog.errorDialog = true
       } else {
         // 获取设备按制URL路径，主要加了法院名称
         const courturl = '/devicecontrol/' + data.id
-        if (this.kzButton.remoteManagement.color === 'red') {
+        if (this.controlButtons.remoteManagement.color === 'red') {
           this.$socket.emit('Operatelogs', {
             UserName: token,
             content: '打开' + data.name + '的远程管理页面！'
@@ -392,7 +391,7 @@ export default defineComponent({
             path: courturl
           })
         }
-        if (this.kzButton.deviceInformation.color === 'red') {
+        if (this.controlButtons.deviceInformation.color === 'red') {
           this.$socket.emit('Operatelogs', {
             UserName: token,
             content: '打开' + data.name + '的故障信息录入页面！'
@@ -406,7 +405,7 @@ export default defineComponent({
             }
           }, 200)
         }
-        if (this.kzButton.deviceLocation.color === 'red') {
+        if (this.controlButtons.deviceLocation.color === 'red') {
           this.$socket.emit('Operatelogs', {
             UserName: token,
             content: '打开' + data.name + '的设备定位页面！'
@@ -415,7 +414,7 @@ export default defineComponent({
           this.$socket.emit('getFailureDevice', data.id)
           this.openDialog.deviceLocation = true
         }
-        if (this.kzButton.faultHandling.color === 'blue' || this.kzButton.faultHandling.color === 'red') {
+        if (this.controlButtons.faultHandling.color === 'blue' || this.controlButtons.faultHandling.color === 'red') {
           this.$socket.emit('faultHandling', id)
           this.filedownconn.courtid = id
           this.$socket.emit('Operatelogs', {
@@ -450,10 +449,10 @@ export default defineComponent({
     },
     // 用于设备定位turnOnDeviceTarget
     deviceLocation () {
-      if (this.kzButton.turnOnDeviceTarget.color === 'red') {
-        this.kzButton.turnOnDeviceTarget.color = 'green'
+      if (this.controlButtons.turnOnDeviceTarget.color === 'red') {
+        this.controlButtons.turnOnDeviceTarget.color = 'green'
       } else {
-        this.kzButton.turnOnDeviceTarget.color = 'red'
+        this.controlButtons.turnOnDeviceTarget.color = 'red'
       }
       this.$socket.emit('deviceLocation', this.devicelist.model)
     }

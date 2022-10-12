@@ -30,7 +30,7 @@ export default defineComponent({
       password
     }) {
       if (username && password) {
-        this.$socket.emit('userauth', {
+        this.$socket.emit('userAuth', {
           user: username,
           passwd: password
         })
