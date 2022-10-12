@@ -106,26 +106,26 @@ export default {
           align: 'center',
           label: '上报时间',
           style: 'width: 20px',
-          field: 'Reporttime'
+          field: 'reportTime'
         },
         {
           name: 'Processtime',
           align: 'center',
           label: '处理时间',
           style: 'width: 20px',
-          field: 'Processtime'
+          field: 'processTime'
         },
         {
           name: 'Courtid',
           align: 'center',
           label: '故障节点',
-          field: 'Courtid'
+          field: 'courtId'
         },
         {
           name: 'Deviceid',
           align: 'center',
           label: '故障设备',
-          field: 'Deviceid'
+          field: 'deviceId'
         },
         {
           name: 'Reportuser',
@@ -137,19 +137,19 @@ export default {
           name: 'Processuser',
           align: 'center',
           label: '处理帐户',
-          field: 'Processuser'
+          field: 'processUser'
         },
         {
           name: 'Failcontent',
           align: 'left',
           label: '上报内容',
-          field: 'Failcontent'
+          field: 'failContent'
         },
         {
           name: 'Processcontent',
           align: 'left',
           label: '处理方案',
-          field: 'Processcontent'
+          field: 'processContent'
         }
       ],
       rows: []
@@ -173,15 +173,15 @@ export default {
       console.log(data)
       for (let i = 0; i < data.length; i++) {
         this.operatetables.rows.push({
-          address: data[i].Address,
-          datatime: data[i].Time,
-          user: data[i].UserName,
-          Logging: data[i].Content
+          address: data[i].address,
+          datatime: data[i].time,
+          user: data[i].userName,
+          Logging: data[i].content
         })
       }
     },
     recvFailureLogs (data) {
-      console.log(data)
+      console.log('fail', data)
       this.failtables.rows = data
     }
   }

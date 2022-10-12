@@ -61,7 +61,7 @@
           <q-card-section>
             <q-card-section>
               <Select v-model="devicelist.model" style="width:100px;margin-right: 10px">
-                <Option v-for="item in devicelist.data" :value="item.Deviceid" :key="item.Deviceid">{{
+                <Option v-for="item in devicelist.data" :value="item.deviceid" :key="item.deviceid">{{
                     item.DeviceName
                   }}
 
@@ -191,7 +191,7 @@ export default defineComponent({
   beforeCreate () {
     this.$socket.emit('getCourtState')
     // this.$socket.emit('tcpconn')
-    this.$socket.emit('Operatelogs', {
+    this.$socket.emit('operateLogs', {
       UserName: token,
       content: '用户访问监测管理页面！'
     })
@@ -226,31 +226,31 @@ export default defineComponent({
           name: 'Failid',
           align: 'center',
           label: '故障ID',
-          field: 'Failid'
+          field: 'failid'
         },
         {
           name: 'Reporttime',
           align: 'center',
           label: '上报时间',
-          field: 'Reporttime'
+          field: 'reporttime'
         },
         {
           name: 'Reportuser',
           align: 'left',
           label: '上报帐号',
-          field: 'Reportuser'
+          field: 'reportuser'
         },
         {
           name: 'FailContent',
           align: 'left',
           label: '故障内容',
-          field: 'FailContent'
+          field: 'failContent'
         },
         {
           name: 'Processcontent',
           align: 'center',
           label: '处理方案',
-          field: 'Processcontent'
+          field: 'processcontent'
         }
       ],
       rows: []
@@ -406,7 +406,7 @@ export default defineComponent({
           }, 200)
         }
         if (this.controlButtons.deviceLocation.color === 'red') {
-          this.$socket.emit('Operatelogs', {
+          this.$socket.emit('operateLogs', {
             UserName: token,
             content: '打开' + data.name + '的设备定位页面！'
           })
@@ -417,7 +417,7 @@ export default defineComponent({
         if (this.controlButtons.faultHandling.color === 'blue' || this.controlButtons.faultHandling.color === 'red') {
           this.$socket.emit('faultHandling', id)
           this.filedownconn.courtid = id
-          this.$socket.emit('Operatelogs', {
+          this.$socket.emit('operateLogs', {
             UserName: token,
             content: '打开' + data.name + '的故障处理页面！'
           })
@@ -472,7 +472,7 @@ export default defineComponent({
       // const xjg = { 杭州地区: [{}] }
     },
     // 用于接收法院状态
-    recvcourtstate (data) {
+    recvCourtState (data) {
       for (let i = 0; i < data.length; i++) {
         if (data[i].CourtState === '0') {
           this.courtState[data[i].CourtID] = 'red'

@@ -80,7 +80,7 @@ export default {
             emphasis: {
               focus: 'series'
             },
-            data: []
+            data: [20, 132, 101, 13, 90, 10, 0, 0, 10, 0, 0, 0, 0]
           }
         ]
       }
