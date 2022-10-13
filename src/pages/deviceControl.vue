@@ -85,8 +85,8 @@ export default defineComponent({
     // 用于远程监听按钮
     const remoteProgress = reactive([])
     const tempInfo = reactive({
-      deviceid: '',
-      courtid: ''
+      deviceId: '',
+      courtId: ''
     })
     const errInfo = reactive({ errinput: '' })
     const openDialog = reactive({
@@ -118,7 +118,7 @@ export default defineComponent({
     this.remotestate.name = '远程监听：'
     this.$socket.emit('getRemoteListening', id)
     this.$socket.emit('deviceManagementUrl', token, id)
-    this.$socket.emit('Operatelogs', {
+    this.$socket.emit('operateLogs', {
       UserName: token,
       content: '用户访问设备管理页面！'
     })
@@ -135,13 +135,13 @@ export default defineComponent({
       // this.deviceadd.url = data.ControlUrl
       if (data.length !== 0) {
         for (let i = 0; i < data.length; i++) {
-          console.log('111111', data[i].DeviceName)
+          console.log('111111', data[i].deviceName)
           this.selectMenu.devicelist.push({
-            courtid: data[i].CourtID,
-            label: data[i].DeviceName,
-            value: data[i].ID,
-            url: data[i].ControlUrl,
-            deviceid: data[i].Deviceid
+            courtId: data[i].courtId,
+            label: data[i].deviceName,
+            value: data[i].Id,
+            url: data[i].controlUrl,
+            deviceId: data[i].deviceId
           })
         }
       } else {
@@ -164,9 +164,8 @@ export default defineComponent({
         for (let i = 0; i < this.remoteProgress.length; i++) {
           if (this.remoteListenDropDownList.model === this.remoteProgress[i].ChannelCode) {
             console.log(3232323, 2111, this.remoteListenDropDownList.model)
-            this.$socket.emit('openRemoteListening', this.remoteProgress[i].ChannelCode, this.remoteProgress[i].Deviceid, 'open')
-          }
-        }
+            this.$socket.emit('openRemoteListening', this.remoteProgress[i].ChannelCode, this.remoteProgress[i].deviceId, 'open')
+          }}
       } else {
         this.$socket.emit('openRemoteListening', 'meter 3', '1', 'close')
         this.remoteListenDropDownList.color = 'red'
@@ -178,25 +177,25 @@ export default defineComponent({
       this.$socket.emit('openRemoteListening', 'meter 3', '1', 'close')
       for (let i = 0; i < this.selectMenu.devicelist.length; i++) {
         if (data === this.selectMenu.devicelist[i].value) {
-          this.$socket.emit('getRemoteListening', this.selectMenu.devicelist[i].deviceid)
+          this.$socket.emit('getRemoteListening', this.selectMenu.devicelist[i].deviceId)
           this.deviceurl.url = this.selectMenu.devicelist[i].url
-          this.tempInfo.deviceid = this.selectMenu.devicelist[i].deviceid
+          this.tempInfo.deviceId = this.selectMenu.devicelist[i].deviceId
         }
       }
     },
     errreturn () {
-      if (this.tempInfo.deviceid === '') {
-        this.tempInfo.deviceid = this.selectMenu.devicelist[0].deviceid
-        this.tempInfo.courtid = this.selectMenu.devicelist[0].courtid
+      if (this.tempInfo.deviceId === '') {
+        this.tempInfo.deviceId = this.selectMenu.devicelist[0].deviceId
+        this.tempInfo.courtId = this.selectMenu.devicelist[0].courtId
       } else {
         for (let i = 0; i < this.selectMenu.devicelist.length; i++) {
-          if (this.selectMenu.devicelist[i].deviceid === this.tempInfo.deviceid) {
-            this.tempInfo.courtid = this.selectMenu.devicelist[i].courtid
+          if (this.selectMenu.devicelist[i].deviceId === this.tempInfo.deviceId) {
+            this.tempInfo.courtId = this.selectMenu.devicelist[i].courtId
           }
         }
       }
-      if (this.tempInfo.deviceid !== '' && this.errInfo.errinput !== '' && this.tempInfo.courtid !== '') {
-        this.$socket.emit('monitorFailureInputLogs', this.tempInfo.courtid, this.errInfo.errinput, token, this.tempInfo.deviceid)
+      if (this.tempInfo.deviceId !== '' && this.errInfo.errinput !== '' && this.tempInfo.courtId !== '') {
+        this.$socket.emit('monitorFailureInputLogs', this.tempInfo.courtId, this.errInfo.errinput, token, this.tempInfo.deviceId)
       }
       this.errInfo.errinput = ''
     }

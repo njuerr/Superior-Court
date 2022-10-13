@@ -95,13 +95,13 @@ export default defineComponent({
       // this.deviceadd.url = data.ControlUrl
       if (data.length !== 0) {
         for (let i = 0; i < data.length; i++) {
-          console.log('111111', data[i].DeviceName)
+          console.log('111111', data[i].deviceName)
           this.selectMenu.devicelist.push({
-            courtid: data[i].CourtID,
-            label: data[i].DeviceName,
-            value: data[i].ID,
-            url: data[i].ControlUrl,
-            deviceid: data[i].Deviceid
+            courtid: data[i].courtId,
+            label: data[i].deviceName,
+            value: data[i].Id,
+            url: data[i].controlUrl,
+            deviceid: data[i].deviceId
           })
         }
       } else {

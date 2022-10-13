@@ -56,11 +56,11 @@ export default {
     const operatetables = reactive({
       columns: [
         {
-          name: 'datatime',
+          name: 'datetime',
           required: true,
           label: '时间',
           align: 'left',
-          field: row => row.datatime,
+          field: row => row.datetime,
           format: val => `${val}`,
           style: 'width: 50px',
           sortOrder: 'ad',
@@ -84,7 +84,7 @@ export default {
           name: 'Logging',
           align: 'center',
           label: '日志内容',
-          field: 'Logging'
+          field: 'logging'
         }
       ],
       rows: []
@@ -96,9 +96,9 @@ export default {
           required: true,
           label: '故障ID',
           align: 'left',
-          field: row => row.Failid,
+          field: row => row.failId,
           format: val => `${val}`,
-          style: 'width: 20px',
+          style: 'width: 30px',
           sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
         },
         {
@@ -174,7 +174,7 @@ export default {
       for (let i = 0; i < data.length; i++) {
         this.operatetables.rows.push({
           address: data[i].address,
-          datatime: data[i].time,
+          datetime: data[i].time,
           user: data[i].userName,
           Logging: data[i].content
         })

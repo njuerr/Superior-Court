@@ -10,10 +10,14 @@
         <div class="col-5">
           <div class="q-pa-md">
             <q-btn-group spread>
-              <q-btn flat label="远程管理" icon="visibility" :color="controlButtons.remoteManagement.color" @click="Remotemanage"/>
-              <q-btn flat label="设备定位" icon="timeline" :color="controlButtons.deviceLocation.color" @click="Devicetarget"/>
-              <q-btn flat label="故障录入" icon="bookmark" :color="controlButtons.deviceInformation.color" @click="Deviceinfo"/>
-              <q-btn flat label="故障处理" icon="share" :color="controlButtons.faultHandling.color" @click="Failprocess"/>
+              <q-btn flat label="远程管理" icon="visibility" :color="controlButtons.remoteManagement.color"
+                     @click="Remotemanage"/>
+              <q-btn flat label="设备定位" icon="timeline" :color="controlButtons.deviceLocation.color"
+                     @click="Devicetarget"/>
+              <q-btn flat label="故障录入" icon="bookmark" :color="controlButtons.deviceInformation.color"
+                     @click="Deviceinfo"/>
+              <q-btn flat label="故障处理" icon="share" :color="controlButtons.faultHandling.color"
+                     @click="Failprocess"/>
             </q-btn-group>
           </div>
         </div>
@@ -61,9 +65,8 @@
           <q-card-section>
             <q-card-section>
               <Select v-model="devicelist.model" style="width:100px;margin-right: 10px">
-                <Option v-for="item in devicelist.data" :value="item.deviceid" :key="item.deviceid">{{
-                    item.DeviceName
-                  }}
+                <Option v-for="item in devicelist.data" :value="item.deviceid" :key="item.deviceid">
+                  {{ item.DeviceName }}
 
                 </Option>
               </Select>
@@ -87,7 +90,8 @@
                   }}
                 </Option>
               </Select>
-              <q-btn flat :color="controlButtons.turnOnDeviceTarget.color" icon="adjust" label="开启定位" @click="deviceLocation"/>
+              <q-btn flat :color="controlButtons.turnOnDeviceTarget.color" icon="adjust" label="开启定位"
+                     @click="deviceLocation"/>
             </q-card-actions>
             <img src="http://127.0.0.1/机柜图.jpg" width="300">
           </q-card-section>
@@ -140,8 +144,8 @@
       <q-dialog v-model="openDialog.downfileDialog">
         <q-card class="my-card" style="min-width: 800px; max-width: 140vw;">
           <q-list bordered class="rounded-borders">
-            <q-item-label header ><h4>资料下载</h4></q-item-label>
-            <q-separator spaced />
+            <q-item-label header><h4>资料下载</h4></q-item-label>
+            <q-separator spaced/>
             <q-item clickable v-ripple v-for="(item,index) in filedownconn.filelist" :key="index"
                     @click="downfile(item.Filename,item.Filesavename)">
               <q-item-section top class="col-2 gt-sm">
@@ -192,10 +196,10 @@ export default defineComponent({
     this.$socket.emit('getCourtState')
     // this.$socket.emit('tcpconn')
     this.$socket.emit('operateLogs', {
-      UserName: token,
+      token: token,
       content: '用户访问监测管理页面！'
     })
-    this.$socket.emit('monitorInit', token)
+    this.$socket.emit('monitoringManagementInit', token)
   },
   unmounted () {
     console.log(1111)
@@ -204,7 +208,7 @@ export default defineComponent({
   setup () {
     // 用于文件下载
     const filedownconn = reactive({
-      courtid: '',
+      courtId: '',
       filelist: []
     })
     // 用于服务器时间
@@ -217,7 +221,7 @@ export default defineComponent({
     // 用于故障录入页的数据绑定
     const errInfo = reactive({
       errinput: '',
-      courtid: ''
+      courtId: ''
     })
     // 用于故障处理
     const failtables = reactive({
@@ -226,19 +230,19 @@ export default defineComponent({
           name: 'Failid',
           align: 'center',
           label: '故障ID',
-          field: 'failid'
+          field: 'failId'
         },
         {
           name: 'Reporttime',
           align: 'center',
           label: '上报时间',
-          field: 'reporttime'
+          field: 'reportTime'
         },
         {
           name: 'Reportuser',
           align: 'left',
           label: '上报帐号',
-          field: 'reportuser'
+          field: 'reportUser'
         },
         {
           name: 'FailContent',
@@ -250,7 +254,7 @@ export default defineComponent({
           name: 'Processcontent',
           align: 'center',
           label: '处理方案',
-          field: 'processcontent'
+          field: 'processContent'
         }
       ],
       rows: []
@@ -326,7 +330,7 @@ export default defineComponent({
     },
     // 用于故障处理页的资料下载页面打开
     downfilepage () {
-      this.$socket.emit('fileDownload', this.filedownconn.courtid)
+      this.$socket.emit('fileDownload', this.filedownconn.courtId)
       this.openDialog.errprocess = false
       setTimeout(() => {
         this.openDialog.downfileDialog = true
@@ -383,7 +387,7 @@ export default defineComponent({
         // 获取设备按制URL路径，主要加了法院名称
         const courturl = '/devicecontrol/' + data.id
         if (this.controlButtons.remoteManagement.color === 'red') {
-          this.$socket.emit('Operatelogs', {
+          this.$socket.emit('operatelogs', {
             UserName: token,
             content: '打开' + data.name + '的远程管理页面！'
           })
@@ -392,11 +396,11 @@ export default defineComponent({
           })
         }
         if (this.controlButtons.deviceInformation.color === 'red') {
-          this.$socket.emit('Operatelogs', {
+          this.$socket.emit('operateLogs', {
             UserName: token,
             content: '打开' + data.name + '的故障信息录入页面！'
           })
-          this.errInfo.courtid = data.id
+          this.errInfo.courtId = data.id
           // 获取故障设备信息
           this.$socket.emit('getFailureDevice', data.id)
           setTimeout(() => {
@@ -416,7 +420,7 @@ export default defineComponent({
         }
         if (this.controlButtons.faultHandling.color === 'blue' || this.controlButtons.faultHandling.color === 'red') {
           this.$socket.emit('faultHandling', id)
-          this.filedownconn.courtid = id
+          this.filedownconn.courtId = id
           this.$socket.emit('operateLogs', {
             UserName: token,
             content: '打开' + data.name + '的故障处理页面！'
@@ -427,8 +431,8 @@ export default defineComponent({
     },
     // 用于故障信息上报
     errreturn () {
-      if (this.errInfo.courtid !== '' && this.errInfo.errinput !== '' && this.devicelist.model !== '') {
-        this.$socket.emit('monitorFailureInputLogs', this.errInfo.courtid, this.errInfo.errinput, token, this.devicelist.model)
+      if (this.errInfo.courtId !== '' && this.errInfo.errinput !== '' && this.devicelist.model !== '') {
+        this.$socket.emit('monitorFailureInputLogs', this.errInfo.courtId, this.errInfo.errinput, token, this.devicelist.model)
       }
       this.errInfo.errinput = ''
     },
@@ -463,7 +467,7 @@ export default defineComponent({
       this.filedownconn.filelist = data
     },
     // 用于页面初使数据
-    monitorInit (data) {
+    recvYcjtinit (data) {
       console.log(22222, data)
       this.courtData = data
       if (this.courtData) {
@@ -473,17 +477,18 @@ export default defineComponent({
     },
     // 用于接收法院状态
     recvCourtState (data) {
+      console.log('r1r1111111', data)
       for (let i = 0; i < data.length; i++) {
-        if (data[i].CourtState === '0') {
-          this.courtState[data[i].CourtID] = 'red'
-        } else if (data[i].CourtState === '1') {
-          this.courtState[data[i].CourtID] = 'blue'
-        } else if (data[i].CourtState === '2') {
-          this.courtState[data[i].CourtID] = 'green'
-        } else if (data[i].CourtID === 'serverTime') {
-          const datatime = data[i].CourtState.split(' ')
-          const time = datatime[1].split('-')
-          this.serverdata.serverTime = datatime[0] + ' ' + time[0] + ':' + time[1] + ':' + time[2]
+        if (data[i].courtState === '0') {
+          this.courtState[data[i].courtId] = 'red'
+        } else if (data[i].courtState === '1') {
+          this.courtState[data[i].courtId] = 'blue'
+        } else if (data[i].courtState === '2') {
+          this.courtState[data[i].courtId] = 'green'
+        } else if (data[i].courtId === 'serverTime') {
+          const datetime = data[i].courtState.split(' ')
+          const time = datetime[1].split('-')
+          this.serverdata.serverTime = datetime[0] + ' ' + time[0] + ':' + time[1] + ':' + time[2]
         }
       }
     },
@@ -492,7 +497,7 @@ export default defineComponent({
       this.devicelist.data = data
     },
     // 用于接收故障处理页面的故障情况
-    recvfailinfor (data) {
+    recvFailureInfo (data) {
       this.failtables.rows = data
     }
   }
