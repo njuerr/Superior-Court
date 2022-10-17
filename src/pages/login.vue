@@ -5,7 +5,7 @@
     </div>
     <Login @on-submit="handleSubmit">
       <UserName name="username"/>
-      <Password name="password"/>
+      <Password name="password" @keyup.enter="handleSubmit"/>
       <Submit/>
     </Login>
     <h6 class="text-red">{{ errmsg.msg }}</h6>
@@ -47,7 +47,7 @@ export default defineComponent({
     },
     recvToken (data) {
       if (data) {
-        this.$socket.emit('Operatelogs', {
+        this.$socket.emit('systemLogs', {
           UserName: data,
           content: '用户登录成功！'
         })

@@ -118,8 +118,8 @@ export default defineComponent({
     this.remotestate.name = '远程监听：'
     this.$socket.emit('getRemoteListening', id)
     this.$socket.emit('deviceManagementUrl', token, id)
-    this.$socket.emit('operateLogs', {
-      UserName: token,
+    this.$socket.emit('systemLogs', {
+      token,
       content: '用户访问设备管理页面！'
     })
   },
@@ -165,7 +165,8 @@ export default defineComponent({
           if (this.remoteListenDropDownList.model === this.remoteProgress[i].ChannelCode) {
             console.log(3232323, 2111, this.remoteListenDropDownList.model)
             this.$socket.emit('openRemoteListening', this.remoteProgress[i].ChannelCode, this.remoteProgress[i].deviceId, 'open')
-          }}
+          }
+        }
       } else {
         this.$socket.emit('openRemoteListening', 'meter 3', '1', 'close')
         this.remoteListenDropDownList.color = 'red'

@@ -65,9 +65,8 @@
           <q-card-section>
             <q-card-section>
               <Select v-model="devicelist.model" style="width:100px;margin-right: 10px">
-                <Option v-for="item in devicelist.data" :value="item.deviceid" :key="item.deviceid">
-                  {{ item.DeviceName }}
-
+                <Option v-for="item in devicelist.data" :value="item.deviceId" :key="item.deviceId">
+                  {{ item.deviceName }}
                 </Option>
               </Select>
               <Input v-model="errInfo.errinput" placeholder="故障内容输入" clearable
@@ -85,8 +84,8 @@
           <q-card-section>
             <q-card-actions class="justify-around">
               <Select v-model="devicelist.model" style="width:100px;margin-right: 10px">
-                <Option v-for="item in devicelist.data" :value="item.Deviceid" :key="item.Deviceid">{{
-                    item.DeviceName
+                <Option v-for="item in devicelist.data" :value="item.deviceId" :key="item.deviceId">{{
+                    item.deviceName
                   }}
                 </Option>
               </Select>
@@ -114,22 +113,22 @@
             </template>
             <template v-slot:body="props">
               <q-tr :props="props">
-                <q-td key="Failid" :props="props">
-                  {{ props.row.Failid }}
+                <q-td key="failId" :props="props">
+                  {{ props.row.failId }}
                 </q-td>
-                <q-td key="Reporttime" :props="props">
-                  {{ props.row.Reporttime }}
+                <q-td key="reportTime" :props="props">
+                  {{ props.row.reportTime }}
                 </q-td>
-                <q-td key="Reportuser" :props="props">
-                  <div class="text-pre-wrap">{{ props.row.Reportuser }}</div>
+                <q-td key="reportUser" :props="props">
+                  {{ props.row.reportUser }}
                 </q-td>
-                <q-td key="FailContent" :props="props">
-                  {{ props.row.FailContent }}
+                <q-td key="failContent" :props="props">
+                  {{ props.row.failContent }}
                 </q-td>
-                <q-td key="Processcontent" :props="props">
-                  {{ props.row.Processcontent }}
+                <q-td key="processContent" :props="props">
+                  {{ props.row.processContent }}
                   <q-popup-edit v-model="props.row.Processcontent" buttons label-set="Save" label-cancel="Close"
-                                v-slot="scope" @save="failfunc" @show="getfailid(props.row.Failid)">
+                                v-slot="scope" @save="failfunc" @show="getfailid(props.row.failId)">
                     <q-input v-model.number="scope.value" dense autofocus @keyup.enter="scope.set"/>
                   </q-popup-edit>
                 </q-td>
@@ -195,8 +194,8 @@ export default defineComponent({
   beforeCreate () {
     this.$socket.emit('getCourtState')
     // this.$socket.emit('tcpconn')
-    this.$socket.emit('operateLogs', {
-      token: token,
+    this.$socket.emit('systemLogs', {
+      token,
       content: '用户访问监测管理页面！'
     })
     this.$socket.emit('monitoringManagementInit', token)
@@ -227,31 +226,31 @@ export default defineComponent({
     const failtables = reactive({
       columns: [
         {
-          name: 'Failid',
+          name: 'failId',
           align: 'center',
           label: '故障ID',
           field: 'failId'
         },
         {
-          name: 'Reporttime',
+          name: 'reportTime',
           align: 'center',
           label: '上报时间',
           field: 'reportTime'
         },
         {
-          name: 'Reportuser',
+          name: 'reportUser',
           align: 'left',
           label: '上报帐号',
           field: 'reportUser'
         },
         {
-          name: 'FailContent',
+          name: 'failContent',
           align: 'left',
           label: '故障内容',
           field: 'failContent'
         },
         {
-          name: 'Processcontent',
+          name: 'processContent',
           align: 'center',
           label: '处理方案',
           field: 'processContent'
@@ -387,8 +386,8 @@ export default defineComponent({
         // 获取设备按制URL路径，主要加了法院名称
         const courturl = '/devicecontrol/' + data.id
         if (this.controlButtons.remoteManagement.color === 'red') {
-          this.$socket.emit('operatelogs', {
-            UserName: token,
+          this.$socket.emit('systemLogs', {
+            token,
             content: '打开' + data.name + '的远程管理页面！'
           })
           this.$router.push({
@@ -396,8 +395,8 @@ export default defineComponent({
           })
         }
         if (this.controlButtons.deviceInformation.color === 'red') {
-          this.$socket.emit('operateLogs', {
-            UserName: token,
+          this.$socket.emit('systemLogs', {
+            token,
             content: '打开' + data.name + '的故障信息录入页面！'
           })
           this.errInfo.courtId = data.id
@@ -410,8 +409,8 @@ export default defineComponent({
           }, 200)
         }
         if (this.controlButtons.deviceLocation.color === 'red') {
-          this.$socket.emit('operateLogs', {
-            UserName: token,
+          this.$socket.emit('systemLogs', {
+            token,
             content: '打开' + data.name + '的设备定位页面！'
           })
           // 获取故障设备信息
@@ -421,8 +420,8 @@ export default defineComponent({
         if (this.controlButtons.faultHandling.color === 'blue' || this.controlButtons.faultHandling.color === 'red') {
           this.$socket.emit('faultHandling', id)
           this.filedownconn.courtId = id
-          this.$socket.emit('operateLogs', {
-            UserName: token,
+          this.$socket.emit('systemLogs', {
+            token,
             content: '打开' + data.name + '的故障处理页面！'
           })
           this.openDialog.errprocess = true
@@ -435,6 +434,7 @@ export default defineComponent({
         this.$socket.emit('monitorFailureInputLogs', this.errInfo.courtId, this.errInfo.errinput, token, this.devicelist.model)
       }
       this.errInfo.errinput = ''
+      this.openDialog.errinputDialog = false
     },
     // 用于故障处理页面的处理方法提交
     failfunc (value, initialValue) {
@@ -467,7 +467,7 @@ export default defineComponent({
       this.filedownconn.filelist = data
     },
     // 用于页面初使数据
-    recvYcjtinit (data) {
+    recvRemoteMonitorInit (data) {
       console.log(22222, data)
       this.courtData = data
       if (this.courtData) {
@@ -477,8 +477,8 @@ export default defineComponent({
     },
     // 用于接收法院状态
     recvCourtState (data) {
-      console.log('r1r1111111', data)
       for (let i = 0; i < data.length; i++) {
+        console.log('data[30]', data[i])
         if (data[i].courtState === '0') {
           this.courtState[data[i].courtId] = 'red'
         } else if (data[i].courtState === '1') {
@@ -491,9 +491,11 @@ export default defineComponent({
           this.serverdata.serverTime = datetime[0] + ' ' + time[0] + ':' + time[1] + ':' + time[2]
         }
       }
+      console.log('r1r1111111', this.courtState[31])
     },
     // 用于接收故障录入页面的设备列表
     recvdevicelist (data) {
+      console.log('data', data)
       this.devicelist.data = data
     },
     // 用于接收故障处理页面的故障情况

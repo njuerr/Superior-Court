@@ -127,7 +127,7 @@ export default defineComponent({
   sockets: {
     recvToken (data) {
       if (data) {
-        this.$socket.emit('Operatelogs', {
+        this.$socket.emit('systemLogs', {
           UserName: data,
           content: '用户登录成功！'
         })

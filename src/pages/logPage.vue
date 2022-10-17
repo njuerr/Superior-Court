@@ -74,17 +74,17 @@ export default {
           field: 'address'
         },
         {
-          name: 'user',
+          name: 'userName',
           align: 'center',
           label: '操作帐号',
           style: 'width: 100px',
-          field: 'user'
+          field: 'userName'
         },
         {
-          name: 'Logging',
+          name: 'content',
           align: 'center',
           label: '日志内容',
-          field: 'logging'
+          field: 'content'
         }
       ],
       rows: []
@@ -116,22 +116,22 @@ export default {
           field: 'processTime'
         },
         {
-          name: 'Courtid',
+          name: 'courtName',
           align: 'center',
           label: '故障节点',
-          field: 'courtId'
+          field: 'courtName'
         },
         {
-          name: 'Deviceid',
+          name: 'deviceName',
           align: 'center',
           label: '故障设备',
-          field: 'deviceId'
+          field: 'deviceName'
         },
         {
           name: 'Reportuser',
           align: 'center',
           label: '上报帐号',
-          field: 'Reportuser'
+          field: 'reportUser'
         },
         {
           name: 'Processuser',
@@ -164,19 +164,19 @@ export default {
     this.$socket.emit('failureLogs')
     this.$socket.emit('operateLogs', token)
     this.$socket.emit('systemLogs', {
-      UserName: token,
+      token,
       content: '用户访问日志页面！'
     })
   },
   sockets: {
     recvSystemLogs (data) {
-      console.log(data)
+      console.log('日志', data)
       for (let i = 0; i < data.length; i++) {
         this.operatetables.rows.push({
           address: data[i].address,
           datetime: data[i].time,
-          user: data[i].userName,
-          Logging: data[i].content
+          userName: data[i].userName,
+          content: data[i].content
         })
       }
     },

@@ -84,18 +84,16 @@ export default defineComponent({
   created () {
     const id = this.$route.params.id
     this.$socket.emit('deviceManagementUrl', token, id)
-    this.$socket.emit('Operatelogs', {
-      UserName: token,
+    this.$socket.emit('systemLogs', {
+      token,
       content: '用户访问设备管理页面！'
     })
   },
   sockets: {
     recvdeviceadd (data) {
-      console.log('sdafasdf', data)
       // this.deviceadd.url = data.ControlUrl
       if (data.length !== 0) {
         for (let i = 0; i < data.length; i++) {
-          console.log('111111', data[i].deviceName)
           this.selectMenu.devicelist.push({
             courtid: data[i].courtId,
             label: data[i].deviceName,
