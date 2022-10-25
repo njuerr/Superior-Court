@@ -127,7 +127,7 @@
                 </q-td>
                 <q-td key="processContent" :props="props">
                   {{ props.row.processContent }}
-                  <q-popup-edit v-model="props.row.Processcontent" buttons label-set="Save" label-cancel="Close"
+                  <q-popup-edit v-model="props.row.Processcontent" buttons label-set="保存" label-cancel="关闭"
                                 v-slot="scope" @save="failfunc" @show="getfailid(props.row.failId)">
                     <q-input v-model.number="scope.value" dense autofocus @keyup.enter="scope.set"/>
                   </q-popup-edit>
@@ -442,10 +442,11 @@ export default defineComponent({
       this.$socket.emit('failureHandleSubmit', this.tempdata.failid, v, token)
       // 用于删除页面的故障条目
       for (let i = 0; i < this.failtables.rows.length; i++) {
-        if (this.failtables.rows[i].Failid === this.tempdata.failid) {
+        if (this.failtables.rows[i].failId === this.tempdata.failid) {
           this.failtables.rows.splice(i, 1)
         }
       }
+      // this.openDialog.errprocess = false
     },
     // 用于故障处理页面的接收故障ID
     getfailid (failid) {
