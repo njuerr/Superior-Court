@@ -32,7 +32,7 @@
         <q-separator/>
         <q-card-actions vertical>
           <q-btn v-for="(item1, id) in item" :key='id' :disable="btnDisable.dis"
-                 :color="courtState[item1.id]" @click="courtBtn(item1,courtState[item1.id],item1.id)">{{ item1.name }}
+                 :color="courtState[item1.courtId]" @click="courtBtn(item1,courtState[item1.courtId],item1.courtId)">{{ item1.courtName }}
           </q-btn>
         </q-card-actions>
       </q-card>
@@ -192,13 +192,13 @@ export default defineComponent({
   name: 'monitorPage',
   // 挂载前接收后端法院列表
   beforeCreate () {
+    this.$socket.emit('monitoringManagementInit', token)
     this.$socket.emit('getCourtState')
     // this.$socket.emit('tcpconn')
     this.$socket.emit('systemLogs', {
       token,
       content: '用户访问监测管理页面！'
     })
-    this.$socket.emit('monitoringManagementInit', token)
   },
   unmounted () {
     console.log(1111)
@@ -481,12 +481,15 @@ export default defineComponent({
       for (let i = 0; i < data.length; i++) {
         console.log('data[30]', data[i])
         if (data[i].courtState === '0') {
-          this.courtState[data[i].courtId] = 'red'
+          console.log('789456', data[i].id)
+          this.courtState[data[i].id] = 'red'
         } else if (data[i].courtState === '1') {
-          this.courtState[data[i].courtId] = 'blue'
+          console.log('789456', data[i].id)
+          this.courtState[data[i].id] = 'blue'
         } else if (data[i].courtState === '2') {
-          this.courtState[data[i].courtId] = 'green'
-        } else if (data[i].courtId === 'serverTime') {
+          console.log('789456', data[i].id)
+          this.courtState[data[i].id] = 'green'
+        } else if (data[i].id === 'serverTime') {
           const datetime = data[i].courtState.split(' ')
           const time = datetime[1].split('-')
           this.serverdata.serverTime = datetime[0] + ' ' + time[0] + ':' + time[1] + ':' + time[2]
@@ -502,6 +505,9 @@ export default defineComponent({
     // 用于接收故障处理页面的故障情况
     recvFailureInfo (data) {
       this.failtables.rows = data
+    },
+    logOut () {
+      this.$router.push('/login')
     }
   }
 })

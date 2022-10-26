@@ -138,6 +138,9 @@ export default defineComponent({
         this.$socket.emit('monitorFailureInputLogs', this.tempInfo.courtid, this.errInfo.errinput, token, this.tempInfo.deviceid)
       }
       this.errInfo.errinput = ''
+    },
+    logOut () {
+      this.$router.push('/login')
     }
   }
 })

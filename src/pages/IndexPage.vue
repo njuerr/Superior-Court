@@ -113,6 +113,9 @@ export default {
     recvcourt (data) {
       this.options.series[0].data = data[0]
       this.options.series[1].data = data[1]
+    },
+    logOut () {
+      this.$router.push('/login')
     }
   }
 }

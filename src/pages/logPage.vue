@@ -183,6 +183,9 @@ export default {
     recvFailureLogs (data) {
       console.log('fail', data)
       this.failtables.rows = data
+    },
+    logOut () {
+      this.$router.push('/login')
     }
   }
 }

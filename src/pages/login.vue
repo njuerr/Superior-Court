@@ -54,6 +54,9 @@ export default defineComponent({
         window.sessionStorage.setItem('token', data)
         this.$router.push('/')
       }
+    },
+    logOut () {
+      this.$router.push('/login')
     }
   }
 })

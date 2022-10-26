@@ -124,6 +124,9 @@ export default {
       window.addEventListener('resize', function () {
         myChart.resize()
       })
+    },
+    logOut () {
+      this.$router.push('/login')
     }
   }
 }

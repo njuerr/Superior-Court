@@ -148,6 +148,9 @@ export default defineComponent({
         this.openDialog.content = '未找到设备,请联系管理员！'
         this.openDialog.state = true
       }
+    },
+    logOut () {
+      this.$router.push('/login')
     }
   },
   mounted () {
