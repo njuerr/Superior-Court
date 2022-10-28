@@ -201,7 +201,7 @@ export default defineComponent({
     this.$socket.emit('monitoringManagementInit', token)
   },
   unmounted () {
-    console.log(1111)
+    // console.log(1111)
     // this.$socket.emit('closeconn')
   },
   setup () {
